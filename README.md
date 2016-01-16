@@ -38,3 +38,11 @@ require('styles.scss!');
 
 The corresponding compiled CSS should be injected into the `<head>` of
 the document.
+
+## Jspm-server hot reload
+
+Include #__hotReload keyword in your scss:
+
+```
+    // #__hotReload
+```

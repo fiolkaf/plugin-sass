@@ -100,7 +100,12 @@ function base64(text) {
 // Note: use link and data-URI to allow source maps to work, unlike <style>
 function injectStyle(css, url) {
   var base64css = base64(css);
-  var link = document.createElement('link');
+  var link = document.querySelector('[data-url="' + url + '"]');
+  if (link) {
+    link.parentNode.removeChild(link);
+  }
+  link = document.createElement('link');
+  link.setAttribute('data-url', url);
   link.rel = 'stylesheet';
   link.href= 'data:text/css;charset=utf-8;base64,' + base64css;
   head.appendChild(link);
@@ -127,7 +132,11 @@ function loadStyle(url) {
         var successful = result.status === 0;
         if (successful) {
           injectStyle(result.text, url);
-          resolve('');
+          if (data.indexOf('#__hotReload') >= 0) {
+            resolve('export let __hotReload = true;');
+          } else {
+            resolve('')
+          }
         } else {
           reject(result.formatted);
         }
